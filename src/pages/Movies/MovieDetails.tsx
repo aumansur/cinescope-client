@@ -1,39 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Button } from "@/components/ui/button";
+import { useGetSingleMovieQuery } from "@/redux/api/api";
 import { Play, Plus, Star, StarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 export default function MovieDetails() {
   const { id: slug } = useParams();
+  const { data, isLoading } = useGetSingleMovieQuery(slug);
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 10; i++) {
-      stars.push(
-        i <= rating ? (
-          <Star key={i} className="text-yellow-500" />
-        ) : (
-          <StarIcon key={i} className="text-gray-500" />
-        )
-      );
-    }
-    return stars;
-  };
-  const formatDate = (isoDate: string): string => {
-    const date = new Date(isoDate);
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+  console.log(data);
+  // isLoading
+  if (isLoading)
+    return (
+      <div className="text-4xl text-yellow-500 flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  const { data: movie } = data;
+
+  console.log(movie);
+
+  // const renderStars = (rating: number) => {
+  //   const stars = [];
+  //   for (let i = 1; i <= 10; i++) {
+  //     stars.push(
+  //       i <= rating ? (
+  //         <Star key={i} className="text-yellow-500" />
+  //       ) : (
+  //         <StarIcon key={i} className="text-gray-500" />
+  //       )
+  //     );
+  //   }
+  //   return stars;
+  // };
+  // const formatDate = (isoDate: string): string => {
+  //   const date = new Date(isoDate);
+  //   return date.toLocaleDateString("en-US", {
+  //     month: "long",
+  //     day: "numeric",
+  //     year: "numeric",
+  //   });
+  // };
 
   // celculate average rating max 10
-  const totalRating = reviews.reduce((acc: number, review: any) => {
-    return acc + review.rating;
-  }, 0);
-  const averageRating = totalRating / reviews.length;
+  // const totalRating = reviews.reduce((acc: number, review: any) => {
+  //   return acc + review.rating;
+  // }, 0);
+  // const averageRating = totalRating / reviews.length;
   return (
     <div className="flex flex-col items-center p-4 bg-gray-900 text-white min-h-screen">
       <div className="max-w-6xl w-full bg-gray-800 rounded-lg shadow-lg p-6 animate__animated animate__fadeIn">
@@ -50,11 +64,11 @@ export default function MovieDetails() {
                 <span className="font-semibold text-yellow-500">
                   Release Date:
                 </span>{" "}
-                {formatDate(movie?.releaseDate)}
+                {/* {formatDate(movie?.releaseDate)} */}
               </p>
               <div className="mb-2 flex items-center">
                 <span className="font-semibold text-yellow-500">Rating:</span>
-                <div className="ml-2 flex">{renderStars(averageRating)}</div>
+                {/* <div className="ml-2 flex">{renderStars(averageRating)}</div> */}
               </div>
               <p className="mb-2">
                 <span className="font-semibold text-yellow-500">Genre:</span>{" "}
@@ -82,7 +96,7 @@ export default function MovieDetails() {
         </div>
         <div className="mt-6">
           <h2 className="text-2xl font-bold mb-4">User Reviews</h2>
-          {reviews.map((review: any) => (
+          {/* {reviews.map((review: any) => (
             <div className="bg-gray-700 p-4 rounded-lg mb-4 animate__animated animate__fadeInUp">
               <p className="text-yellow-500 font-semibold">{review.email}</p>
               <p className="text-gray-400 text-sm mb-2">
@@ -90,7 +104,7 @@ export default function MovieDetails() {
               </p>
               <p>{review.comment}</p>
             </div>
-          ))}
+          ))} */}
           <Button className="px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg font-bold hover:bg-yellow-400">
             Load More Reviews
           </Button>
